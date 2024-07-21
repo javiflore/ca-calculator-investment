@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CurrencyPipe, NgFor } from '@angular/common';
+import { InvestmentService } from '../investment.service';
 
 @Component({
   selector: 'app-investment-results',
@@ -10,13 +11,13 @@ import { CurrencyPipe, NgFor } from '@angular/common';
 })
 export class InvestmentResultsComponent {
 
-  results = input<{
-    year: number,
-    interest: number,
-    valueEndOfYear: number,
-    annualInvestment: number,
-    totalInterest: number,
-    totalAmountInvested: number,
-  }[]>();
+  private investmentService = inject(InvestmentService);
+
+  /** This is a computed READONLY signal that will update whenever the resultData signal 
+   * in the InvestmentService is updated.
+   * You can not set this signal directly.
+  */
+  results = computed(() => this.investmentService.resultData());
+  // result =this.investmentService.resultData.asReadonly; //the same as above
 
 }
